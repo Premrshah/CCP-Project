@@ -3,9 +3,9 @@ import pandas as pd
 
 def load_data(dataset_name):
     if dataset_name == "Synthetic":
-        return pd.read_csv("CCP/synthetic.csv")
+        return pd.read_csv("synthetic.csv")
     elif dataset_name == "Organic":
-        return pd.read_csv("CCP/organic.csv") 
+        return pd.read_csv("organic.csv") 
 
 st.title("Data Visualization for Fast Fashion!")
 
