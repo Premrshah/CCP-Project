@@ -1,22 +1,29 @@
 import streamlit as st
 import pandas as pd
 
-def load_data(dataset_name):
-    if dataset_name == "Synthetic":
-        return pd.read_csv("synthetic.csv")
-    elif dataset_name == "Organic":
-        return pd.read_csv("organic.csv") 
-
 st.title("Data Visualization for Fast Fashion!")
 
-dataset_option = st.selectbox(
-    "Choose a dataset to view:",
-    ("Synthetic", "Organic")
+df_syn = pd.read_csv("synthetic.csv")
+df_org = pd.read_csv("organic.csv")
+
+st.subheader("Combined Dataset Comparison")
+
+df_combined = pd.merge(
+    df_syn[['x_value', 'y_value']], 
+    df_org[['x_value', 'y_value']], 
+    on='x_value', 
+    suffixes=('_synthetic', '_organic')
 )
 
-df = load_data(dataset_option)
+st.line_chart(df_combined, x='x_value', y=['y_value_synthetic', 'y_value_organic'])
 
-st.line_chart(df, x="x_value", y="y_value")
-st.dataframe(df)
+col1, col2 = st.columns(2)
 
+def show_data(name, df):
+    with (col1 if name == "Synthetic" else col2):
+        st.subheader(f"{name} Dataset")
+        st.line_chart(df, x='x_value', y='y_value')
+        st.dataframe(df)
 
+show_data("Synthetic", df_syn)
+show_data("Organic", df_org)
