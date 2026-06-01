@@ -45,6 +45,44 @@ df = pd.DataFrame({
     ]
 })
 
+natural_avg = df.loc[
+    df["Fiber category"] == "Natural/regenerated",
+    "Biodegradation after 181 days (%)"
+].mean()
+
+synthetic_avg = df.loc[
+    df["Fiber category"] == "Synthetic",
+    "Biodegradation after 181 days (%)"
+].mean()
+
+# Calculate summary metrics (Start of AI code)
+
+difference = natural_avg - synthetic_avg
+
+st.subheader("Summary Metrics")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        label="Natural/Regenerated Average",
+        value=f"{natural_avg:.1f}%"
+    )
+
+with col2:
+    st.metric(
+        label="Synthetic Average",
+        value=f"{synthetic_avg:.1f}%"
+    )
+
+with col3:
+    st.metric(
+        label="Difference",
+        value=f"{difference:.1f} percentage points"
+    )
+
+#END of AI code 
+
 st.subheader("Graph 1: Biodegradation by Fiber Type")
 
 st.write(
@@ -82,16 +120,6 @@ st.bar_chart(
 st.dataframe(category_df, use_container_width=True)
 
 st.subheader("Conclusion")
-
-natural_avg = category_df.loc[
-    category_df["Fiber category"] == "Natural/regenerated",
-    "Biodegradation after 181 days (%)"
-].values[0]
-
-synthetic_avg = category_df.loc[
-    category_df["Fiber category"] == "Synthetic",
-    "Biodegradation after 181 days (%)"
-].values[0]
 
 st.write(
     f"Natural/regenerated fibers had an average biodegradation of about "
